@@ -12,10 +12,21 @@ pytest = "^7.1"
 pydantic = "^2.7.2"
 fastapi = "^0.111.0"
 uvicorn = "^0.30.0"
+pytest-mock = "^3.14.0"
+pytest-asyncio = "^0.23.7"
+sqlalchemy = "^2.0.30"
+psycopg2-binary = "^2.9.9"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 sample = "sample.main:main"
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "serial",
+    "asyncio: Run asynchronous tests using asyncio",
+]
 

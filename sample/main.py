@@ -1,31 +1,24 @@
 
-from fastapi import FastAPI
-import uvicorn
-from http.client import HTTPException
+from fastapi import FastAPI, HTTPException  # type: ignore
+import uvicorn  # type: ignore
 
 from sample.validators import validate_name
-from sample.data_access import users
-
+from sample.data_access import query_contact_count, query_contacts_by_exact_last_name
 
 app = FastAPI()
 
 
-@app.get("/users")
+@app.get("/contacts")
 async def get_user_by_last_name(last_name: str):
     if validate_name(last_name) is False:
         raise HTTPException(status_code=400, detail="Invalid name")
 
-    matches = []    
-    for user in users:
-        if user["last_name"] == last_name:
-            matches.append(user)
-
-    return matches
+    return query_contacts_by_exact_last_name(last_name)
 
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the User Lookup API"}
+    return {"contactCount": query_contact_count()}
 
 
 def main():

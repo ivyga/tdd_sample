@@ -2,6 +2,8 @@ import re
 
 
 def validate_name(name: str) -> bool:
+    print("Unpatched validate_name called!")
+    
     # Check if the name is empty or None
     if not name:
         return False
