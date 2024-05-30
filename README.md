@@ -57,3 +57,17 @@
   - Not Sure If We'll Get That Far
 - **Discussion**:
   - TBD
+
+# Commands
+
+To start the DB
+`docker compose up`
+
+To start the API (DB needs to be starte)
+`poetry run sample`
+
+To run tests (DB needs to be started for integration tests)
+`poetry run pytest`
+
+# Branch: blank-start
+Story 1 complete
