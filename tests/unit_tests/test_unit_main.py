@@ -15,3 +15,16 @@ def test_get_root__mocked_query__returns_query_count():
         # Assert
         assert response.status_code == 200
         assert response.json() == {"contactCount": 42}
+
+
+def test_get_contats__mocked_validator__returns_400():
+    # Arrange
+    with patch('sample.main.validate_name', return_value=False):
+        # Act
+        response = client.get("/contacts?last_name=DoesNotMatter")
+
+        # Assert
+        assert response.status_code == 400
+
+
+

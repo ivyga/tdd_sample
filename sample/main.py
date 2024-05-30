@@ -1,8 +1,9 @@
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn  # type: ignore
 
 from sample.data_access import query_contact_count, query_contacts_by_last_name
+from sample.validators import validate_name
 
 app = FastAPI()
 
@@ -14,6 +15,8 @@ async def root():
 
 @app.get("/contacts")
 async def get_contacts_by_last_name(last_name: str):
+    if validate_name(last_name) is False:
+        raise HTTPException(status_code=400, detail="Invalid name")
     return query_contacts_by_last_name(last_name)
 
 
