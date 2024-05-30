@@ -1,2 +1,147 @@
 Start by checkout of Story-2 checkout -b Story-3-Demo-Something-unique
 
+Add new validators.py file
+####################
+import re
+
+
+def validate_name(name: str) -> bool:
+	return True
+####################
+
+Add new unit tests test_unit_validators.py
+####################
+from sample.validators import validate_name
+
+
+def test_validate_name__too_short__returns_false():
+    # arrange
+    too_short = 'Iv'
+
+    # act
+    actual = validate_name(too_short)
+
+    # assert
+    assert actual is False
+####################
+poetry run pytest tests/unit_tests/test_unit_validators.py
+
+>       assert actual is False
+E       assert True is False
+
+Adjusted function
+#########################
+def validate_name(name: str) -> bool:
+    if len(name) < 3:
+        return False
+    return True
+#########################
+poetry run pytest tests/unit_tests/test_unit_validators.py
+
+Passes
+
+Cut to the chase, write all the remaining tests
+#############################
+from sample.validators import validate_name
+
+
+def test_validate_name__too_short__returns_false():
+    # arrange
+    too_short = 'Iv'
+
+    # act
+    actual = validate_name(too_short)
+
+    # assert
+    assert actual is False
+
+
+def test_name_input__malformed__returns_false():
+    # arrange
+    malformed_name = 'Select *'
+
+    # act
+    actual = validate_name(malformed_name)
+
+    # assert
+    assert actual is False
+
+
+def test_name_input__valid_input__returns_true():
+    # arrange
+    valid_name = 'Gary'
+
+    # act
+    actual = validate_name(valid_name)
+
+    # assert
+    assert actual is True
+###############################
+
+Fails
+
+Final Implementation (or others that pass the test
+##############################
+
+import re
+
+
+def validate_name(name: str) -> bool:
+    print("Unpatched validate_name called!")
+    
+    # Check if the name is empty or None
+    if not name:
+        return False
+    
+    if len(name) < 3:
+        return False
+
+    # Check for valid characters: letters, spaces, and hyphens
+    if not re.match(r'^[a-zA-Z\s-]+$', name):
+        return False
+    
+    # Check for leading/trailing spaces or hyphens
+    if name[0] in " -" or name[-1] in " -":
+        return False
+    
+    # Check for consecutive spaces or hyphens
+    if re.search(r'\s{2,}', name) or re.search(r'-{2,}', name):
+        return False
+    
+    return True
+##############################
+
+Passes, now lets use the new method
+
+Here is the update unit test in test_unit_main
+##############################
+def test_get_contats__mocked_validator__returns_400():
+    # Arrange
+    with patch('sample.main.validate_name', return_value=False):
+        # Act
+        response = client.get("/contacts?last_name=DoesNotMatter")
+
+        # Assert
+        assert response.status_code == 400
+############################################
+
+AttributeError: <module 'sample.main' from '/Users/ivyga/clients/wwt/sample/sample/main.py'> does not have the attribute 'validate_name'
+
+Implement in main
+####################################
+@app.get("/contacts")
+async def get_contacts_by_last_name(last_name: str):
+    if validate_name(last_name) is False:
+        raise HTTPException(status_code=400, detail="Invalid name")
+    return query_contacts_by_last_name(last_name)
+############################################
+
+http://localhost:8000/contacts?last_name=x returns a 400
+http://localhost:8000/contacts?last_name=Smith ---no regregssions
+
+
+
+
+
+
+
