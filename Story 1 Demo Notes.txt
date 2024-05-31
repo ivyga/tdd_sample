@@ -1,0 +1,20 @@
+review story 1 objective:
+new API with a route that tests connectivity db
+
+demo the application:
+git checkout main
+docker compose up
+npm run sample
+curl http://localhost:8000
+
+Discuss easy unit test (easy to mock query_contact_count):
+Display main.py and test_unit_main.py
+poetry run pytest tests/unit_tests/test_unit_main.py
+
+Discuss harder unit test (harder to mock sqlalchemy create_engine, connection, etc.):
+Display data_access.py and test_unit_data_access.py
+poetry run pytest tests/unit_tests/test_unit_data_access.py
+
+Discuss how integration test provides is easier to setup (with one caveat, a local atmoic db)
+AND mitigates more risk with less code (An actual DB query):
+Display test_unit_main.py, test_unit_data_access.py, test_get_root_py
