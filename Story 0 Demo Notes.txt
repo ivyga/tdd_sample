@@ -1,0 +1,58 @@
+
+When an application breaks, 
+    the most commonly asked question is: "What changed?"
+    Why? Changes introduce risks into the system.
+    To mitigate these risks, we rely on testing.
+
+However, testing takes time.
+    Automated testing helps us save time and surface bugs earlier in the development cycle.
+    Automated tests can be reused in a deployment pipeline, 
+        providing continuous assurance of code quality.
+
+In summary, automated testing not only makes our testing process more efficient 
+    but also helps maintain the stability and reliability 
+    of our application throughout its lifecycle
+
+There are many types of automated testing.  
+    Some of these types simply extend the scope of integration testing.  
+    For our purposes, just unit vs integration test.
+
+The slide offers a comparison.
+
+UNIT TEST
+Test a small ”unit” of application
+    One Function
+    One Class
+    Any dependencies are always “mocked”
+
+Benefits
+    Validate code in “isolation”
+    Run faster
+        Great units with lots of edge cases
+    Generally, easier to write
+        Depends on the level of difficulty in mocking dependencies
+
+INTEGRATION TEST
+Tests proved the “units” integrate
+    A few units
+    An entire API call
+    A ”vertical slice” (Some call this End to End)
+        UI event
+        API Call
+        DB Query
+Benefits
+    Proves more of the application still works
+    Can be easier, at times, to write over unit
+        Less mocking (perhaps no mocking)
+
+
+
+
+
+
+
+
+
+
+
+

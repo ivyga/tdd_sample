@@ -1,11 +1,14 @@
 review story 1 objective:
 new API with a route that tests connectivity db
 
-demo the application:
+demo the application (manual test):
 git checkout main
 docker compose up
 npm run sample
 curl http://localhost:8000
+
+relate the value of this story:
+when deployed, quickly surfaces common issues, bad password, firewall, etc.
 
 Discuss easy unit test (easy to mock query_contact_count):
 Display main.py and test_unit_main.py
