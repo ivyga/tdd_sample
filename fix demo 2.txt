@@ -18,3 +18,9 @@ def test_get_contacts__returns_200():
 
     # Assert
     assert response.status_code == 200
+
+did it work
+git checkout main
+git reset --hard @{u}
+git checkout -b story-2-demo
+touch tests/integration_tests/test_get_contacts.py

@@ -1,8 +1,42 @@
+<script>
+ document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Find the next sibling <pre> element
+                let preElement = button.parentElement.nextElementSibling;
+                if (preElement && preElement.tagName.toLowerCase() === 'pre') {
+                    let codeBlock = preElement.querySelector('code').innerText;
+
+                    // Create a temporary textarea element
+                    let tempTextarea = document.createElement("textarea");
+                    tempTextarea.value = codeBlock;
+                    document.body.appendChild(tempTextarea);
+
+                    // Select the text in the textarea
+                    tempTextarea.select();
+                    tempTextarea.setSelectionRange(0, 99999); // For mobile devices
+
+                    // Copy the text to the clipboard
+                    document.execCommand("copy");
+
+                    // Remove the temporary textarea element
+                    document.body.removeChild(tempTextarea);
+
+                    // Optionally, alert the user that the code has been copied
+                    alert("Code copied to clipboard!");
+                } else {
+                    alert("No code block found to copy!");
+                }
+            });
+        });
+    });</script>
 # Demo Story 2
 
 ## Prerequisites
 
+<button class="copy-btn">Copy Code</button>
 ```
+did it work
 git checkout main
 git reset --hard @{u}
 git checkout -b story-2-demo
@@ -14,6 +48,7 @@ touch tests/integration_tests/test_get_contacts.py
 AC: New Route GET /contacts?last_name={last_name} Returns 200
 
 Paste into test_get_contacts.py:
+<button class="copy-btn">Copy Code</button>
 ```
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
@@ -38,6 +73,7 @@ def test_get_contacts__returns_200():
 ```
 
 Run the test
+<button class="copy-btn">Copy Code</button>
 ```
 poetry run pytest tests/integration_tests/test_get_contacts.py
 ```
@@ -45,6 +81,7 @@ poetry run pytest tests/integration_tests/test_get_contacts.py
 Expect 404 because the route does not exist.
 
 Fix by adding this method to main.py.  We are doing just enough to pass the test.
+<button class="copy-btn">Copy Code</button>
 
 ```
 @app.get("/contacts")
@@ -59,6 +96,7 @@ Test again.  Expect it to pass.
 AC: Returns [{ id, firstName, lastName, email ]]
 
 Add this test:
+<button class="copy-btn">Copy Code</button>
 ```
 def test_get_users__real_query__returns_matching_contacts():
     # Arrange
@@ -83,7 +121,7 @@ def query_expected_matches(last_name):
 ```
 
 Expect it to fail. Add this method in data_access.py
-
+<button class="copy-btn">Copy Code</button>
 ```
 def query_contacts_by_last_name(last_name):
     with engine.connect() as connection:
