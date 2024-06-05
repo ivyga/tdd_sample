@@ -32,4 +32,17 @@
     });</script>
 # Demo Story 3
 
+
+<button class="copy-btn">Copy Code</button>
+```
+git checkout story-2
+git reset --hard @{u}
+docker-compose
+```
+
+## Start API 
+(Run this in another terminal)
+```
+poetry run sample
+```
 TODO

@@ -36,7 +36,6 @@
 
 <button class="copy-btn">Copy Code</button>
 ```
-did it work
 git checkout main
 git reset --hard @{u}
 git checkout -b story-2-demo

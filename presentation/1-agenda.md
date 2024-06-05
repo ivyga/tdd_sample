@@ -1,6 +1,9 @@
+# Agenda
+
 Quick Review
 * Why Automated Testing 
 * Unit Tests vs Integration Test
+* Story Roadmap 
 
 Story 1 – New API to Query Contact DB
 * Walk through the code, unit, and integration tests
