@@ -24,7 +24,7 @@ This has no "user facing value". This early release is a best practice to catch 
 <b><br>AC:</b>
 <br/> 
 <li>New route: GET /contacts?last_name={last-name} returns 200</li>
-<li>Returns <code>[{ id, firstName, lastName, email ]]</code></li>
+<li>Returns <code>[{ id, first_name, last_name, email ]]</code></li>
 <br/>
 <b>Value:</b>
 <br>
