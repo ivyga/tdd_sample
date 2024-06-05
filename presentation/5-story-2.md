@@ -92,7 +92,7 @@ Test again.  Expect it to pass.
 
 ## TDD AC #2
 
-AC: Returns [{ id, firstName, lastName, email ]]
+AC: Returns [{ id, first_name, last_name, email ]]
 
 Add this test:
 <button class="copy-btn">Copy Code</button>
@@ -130,4 +130,92 @@ def query_contacts_by_last_name(last_name):
         return contacts
 ```
 
+Call it from main.py
+Test should pass.
+
+
+## Refactor Time
+
+Note: Switch query implementation to ORM:
+
+<button class="copy-btn">Copy Code</button>
+```python
+from sqlalchemy import create_engine, Column, Integer, String  # func, Index 
+from sqlalchemy.ext.declarative import declarative_base  # type: ignore
+from sqlalchemy.orm import sessionmaker  # type: ignore
+from pydantic import BaseModel, ConfigDict  # type: ignore
+
+from sample.get_db_connection_string import get_db_connecion_string
+
+engine = create_engine(get_db_connecion_string())
+
+Base = declarative_base()
+SessionLocal = sessionmaker(bind=engine)
+
+
+class ContactDB(Base):
+    __tablename__ = 'contact'
+    id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String, index=True)
+    last_name = Column(String, index=True)
+    email = Column(String, unique=True, index=True)
+
+
+Base.metadata.create_all(bind=engine)
+
+
+class Contact(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    email: str
+
+    class Config(ConfigDict):
+        from_attributes = True
+
+
+def query_contact_count() -> int:
+    session = SessionLocal()
+    try:
+        count = session.query(ContactDB).count()
+        return count
+    finally:
+        session.close()
+
+
+def query_contacts_by_last_name(input: str) -> list[Contact]:
+    session = SessionLocal()
+    try:
+        db_contacts = session.query(ContactDB).filter(ContactDB.last_name == input).all()
+        contacts = [Contact.from_orm(contact) for contact in db_contacts]
+        return contacts
+    finally:
+        session.close()
+```
+
+Integration Test will still pass
+Unit test broken (too contrained on the knowledge of implementation).  Fix it with this:
+
+
+```python
+import pytest
+from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
+from sample.data_access import query_contact_count, ContactDB, SessionLocal
+
+# Use pytest-mock fixture for mocking
+def test_query_contact_count(mocker):
+    # Arrange
+    mock_count = 5  # Example count value
+    mock_session = mocker.MagicMock(spec=Session)
+    mocker.patch('sample.data_access.SessionLocal', return_value=mock_session)  # Mock SessionLocal to return the mock session
+    mock_query = mock_session.query.return_value  # Mock the query method of the session
+    mock_query.count.return_value = mock_count  # Mock the count method of the query object to return the example count value
+
+    # Act
+    count = query_contact_count()
+
+    # Assert
+    assert count == mock_count
+```
 
